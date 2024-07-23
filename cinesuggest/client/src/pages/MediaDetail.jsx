@@ -212,11 +212,9 @@ const MediaDetail = () => {
                   </Stack>
                   {/* buttons */}
 
-                  {/* cast */}
                   <Container header="Cast">
-                    <CastSlide casts={media.credits.cast} />
+                  <CastSlide casts={media.credits.cast} />
                   </Container>
-                  {/* cast */}
                 </Stack>
               </Box>
               {/* media info */}
@@ -241,9 +239,9 @@ const MediaDetail = () => {
           {/* media backdrop */}
 
           {/* media posters */}
-          {media.images.posters.length > 0 && (
+          {media.images.posters.length>0 && (
             <Container header="posters">
-              <PosterSlide posters={media.images.posters} />
+               <PosterSlide posters={media.images.posters} />
             </Container>
           )}
           {/* media posters */}

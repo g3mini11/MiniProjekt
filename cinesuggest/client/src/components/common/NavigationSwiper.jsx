@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
-import Navigation from "swiper";
-import Pagination from "swiper";
+import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper } from "swiper/react";
 
 const NavigationSwiper = ({ children }) => {
