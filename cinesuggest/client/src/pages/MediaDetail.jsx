@@ -109,7 +109,7 @@ const MediaDetail = () => {
     if (response) {
       dispatch(removeFavorite(favorite));
       setIsFavorite(false);
-      toast.success("Remove favorite success");
+      //toast.success("Remove favorite success");
     }
   };
 
