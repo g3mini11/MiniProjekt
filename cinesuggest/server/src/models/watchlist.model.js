@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import modelOptions from "./model.options.js";
 
 export default mongoose.model(
-  "Favorite",
+  "Watchlist",
   mongoose.Schema({
     user: {
       type: Schema.Types.ObjectId,

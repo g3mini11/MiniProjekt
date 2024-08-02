@@ -1,15 +1,15 @@
 import privateClient from "../client/private.client";
 
-const favoriteEndpoints = {
-  list: "user/favorites",
-  add: "user/favorites",
-  remove: ({ favoriteId }) => `user/favorites/${favoriteId}`
+const watchlistEndpoints = {
+  list: "user/watchlists",
+  add: "user/watchlists",
+  remove: ({ watchlistId }) => `user/watchlists/${watchlistId}`
 };
 
-const favoriteApi = {
+const watchlistApi = {
   getList: async () => {
     try {
-      const response = await privateClient.get(favoriteEndpoints.list);
+      const response = await privateClient.get(watchlistEndpoints.list);
 
       return { response };
     } catch (err) { return { err }; }
@@ -23,7 +23,7 @@ const favoriteApi = {
   }) => {
     try {
       const response = await privateClient.post(
-        favoriteEndpoints.add,
+        watchlistEndpoints.add,
         {
           mediaId,
           mediaType,
@@ -36,13 +36,13 @@ const favoriteApi = {
       return { response };
     } catch (err) { return { err }; }
   },
-  remove: async ({ favoriteId }) => {
+  remove: async ({ watchlistId }) => {
     try {
-      const response = await privateClient.delete(favoriteEndpoints.remove({ favoriteId }));
+      const response = await privateClient.delete(watchlistEndpoints.remove({ watchlistId }));
 
       return { response };
     } catch (err) { return { err }; }
   }
 };
 
-export default favoriteApi;
+export default watchlistApi;

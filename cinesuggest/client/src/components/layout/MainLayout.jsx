@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import userApi from "../../api/modules/user.api";
-import favoriteApi from "../../api/modules/favorite.api";
-import { setListFavorites, setUser } from "../../redux/features/userSlice";
+import watchlistApi from "../../api/modules/watchlist.api";
+import { setListWatchlists, setUser } from "../../redux/features/userSlice";
 
 const MainLayout = () => {
   const dispatch = useDispatch();
@@ -28,15 +28,15 @@ const MainLayout = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const getFavorites = async () => {
-      const { response, err } = await favoriteApi.getList();
+    const getWatchlists = async () => {
+      const { response, err } = await watchlistApi.getList();
 
-      if (response) dispatch(setListFavorites(response));
+      if (response) dispatch(setListWatchlists(response));
       if (err) toast.error(err.message);
     };
 
-    if (user) getFavorites();
-    if (!user) dispatch(setListFavorites([]));
+    if (user) getWatchlists();
+    if (!user) dispatch(setListWatchlists([]));
   }, [user, dispatch]);
 
   return (

@@ -1,5 +1,5 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import WLicon from "@mui/icons-material/LocalMovies";
+import WLOutlinedIcon from "@mui/icons-material/LocalMoviesOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import { LoadingButton } from "@mui/lab";
@@ -16,11 +16,11 @@ import ImageHeader from "../components/common/ImageHeader";
 import uiConfigs from "../configs/ui.configs";
 import tmdbConfigs from "../api/configs/tmdb.configs";
 import mediaApi from "../api/modules/media.api";
-import favoriteApi from "../api/modules/favorite.api";
+import watchlistApi from "../api/modules/watchlist.api";
 
 import { setGlobalLoading } from "../redux/features/globalLoadingSlice";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
-import { addFavorite, removeFavorite } from "../redux/features/userSlice";
+import { addWatchlist, removeWatchlist } from "../redux/features/userSlice";
 
 import CastSlide from "../components/common/CastSlide";
 import MediaVideosSlide from "../components/common/MediaVideosSlide";
@@ -33,10 +33,10 @@ import MediaReview from "../components/common/MediaReview";
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
 
-  const { user, listFavorites } = useSelector((state) => state.user);
+  const { user, listWatchlists } = useSelector((state) => state.user);
 
   const [media, setMedia] = useState();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isWatchlist, setIsWatchlist] = useState(false);
   const [onRequest, setOnRequest] = useState(false);
   const [genres, setGenres] = useState([]);
 
@@ -53,7 +53,7 @@ const MediaDetail = () => {
 
       if (response) {
         setMedia(response);
-        setIsFavorite(response.isFavorite);
+        setIsWatchlist(response.isWatchlist);
         setGenres(response.genres.splice(0, 2));
       }
 
@@ -63,13 +63,13 @@ const MediaDetail = () => {
     getMedia();
   }, [mediaType, mediaId, dispatch]);
 
-  const onFavoriteClick = async () => {
+  const onWatchlistClick = async () => {
     if (!user) return dispatch(setAuthModalOpen(true));
 
     if (onRequest) return;
 
-    if (isFavorite) {
-      onRemoveFavorite();
+    if (isWatchlist) {
+      onRemoveWatchlist();
       return;
     }
 
@@ -83,33 +83,33 @@ const MediaDetail = () => {
       mediaRate: media.vote_average
     };
 
-    const { response, err } = await favoriteApi.add(body);
+    const { response, err } = await watchlistApi.add(body);
 
     setOnRequest(false);
 
     if (err) toast.error(err.message);
     if (response) {
-      dispatch(addFavorite(response));
-      setIsFavorite(true);
-      toast.success("Add favorite success");
+      dispatch(addWatchlist(response));
+      setIsWatchlist(true);
+      toast.success("Add watchlist success");
     }
   };
 
-  const onRemoveFavorite = async () => {
+  const onRemoveWatchlist = async () => {
     if (onRequest) return;
     setOnRequest(true);
 
-    const favorite = listFavorites.find(e => e.mediaId.toString() === media.id.toString());
+    const watchlist = listWatchlists.find(e => e.mediaId.toString() === media.id.toString());
 
-    const { response, err } = await favoriteApi.remove({ favoriteId: favorite.id });
+    const { response, err } = await watchlistApi.remove({ watchlistId: watchlist.id });
 
     setOnRequest(false);
 
     if (err) toast.error(err.message);
     if (response) {
-      dispatch(removeFavorite(favorite));
-      setIsFavorite(false);
-      //toast.success("Remove favorite success");
+      dispatch(removeWatchlist(watchlist));
+      setIsWatchlist(false);
+      toast.success("Remove watchlist success");
     }
   };
 
@@ -195,10 +195,10 @@ const MediaDetail = () => {
                         "& .MuiButon-starIcon": { marginRight: "0" }
                       }}
                       size="large"
-                      startIcon={isFavorite ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
+                      startIcon={isWatchlist ? <WLicon /> : <WLOutlinedIcon/>}
                       loadingPosition="start"
                       loading={onRequest}
-                      onClick={onFavoriteClick}
+                      onClick={onWatchlistClick}
                     />
                     <Button
                       variant="contained"

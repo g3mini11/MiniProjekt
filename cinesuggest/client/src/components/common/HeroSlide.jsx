@@ -100,7 +100,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
               position: "absolute",
               top: 0,
               left: 0,
-              ...uiConfigs.style.horizontalGradientBgImage[theme.palette.mode]
+              //...uiConfigs.style.horizontalGradientBgImage[theme.palette.mode]
             }} />
             <Box sx={{
               width: "100%",
@@ -175,8 +175,8 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
             </Box>
           </SwiperSlide>
         ))}
-      </Swiper>
-    </Box>
+      </Swiper>   
+    </Box> 
   );
 };
 

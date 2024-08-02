@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 import tmdbConfigs from "../../api/configs/tmdb.configs";
 import uiConfigs from "../../configs/ui.configs";
 import { routesGen } from "../../routes/routes";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import WLicon from "@mui/icons-material/LocalMovies";
 import CircularRate from "./CircularRate";
 import { useSelector } from "react-redux";
-import favoriteUtils from "../../utils/favorite.utils";
+import watchlistUtils from "../../utils/watchlist.utils";
 
 const MediaItem = ({ media, mediaType }) => {
-  const { listFavorites } = useSelector((state) => state.user);
+  const { listWatchlists } = useSelector((state) => state.user);
 
   const [title, setTitle] = useState("");
   const [posterPath, setPosterPath] = useState("");
@@ -44,8 +44,8 @@ const MediaItem = ({ media, mediaType }) => {
         {/* movie or tv item */}
         {mediaType !== "people" && (
           <>
-            {favoriteUtils.check({ listFavorites, mediaId: media.id }) && (
-              <FavoriteIcon
+            {watchlistUtils.check({ listWatchlists, mediaId: media.id }) && (
+              <WLicon
                 color="primary"
                 sx={{
                   position: "absolute",

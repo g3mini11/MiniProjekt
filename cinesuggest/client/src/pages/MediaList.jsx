@@ -24,25 +24,8 @@ const MediaList = () => {
   const prevMediaType = usePrevious(mediaType);
   const dispatch = useDispatch();
 
-  const mediaCategories = useMemo(() => {
-    if (mediaType === tmdbConfigs.mediaType.movie) {
-      return ["popular", "top_rated", "upcoming","now_playing"];
-    } else if (mediaType === tmdbConfigs.mediaType.tv) {
-      return ["popular", "top_rated", "on_the_air", "airing_today"];
-    } else {
-      return [];
-    }
-  }, [mediaType]);
-
-  const category = useMemo(() => {
-    if (mediaType === tmdbConfigs.mediaType.movie) {
-      return ["popular", "top rated", "upcoming", "now playing"];
-    } else if (mediaType === tmdbConfigs.mediaType.tv) {
-      return ["popular", "top rated", "on tv", "airing today"];
-    } else {
-      return [];
-    }
-  }, [mediaType]);
+  const mediaCategories = useMemo(() => ["popular", "top_rated"], []);
+  const category = ["popular", "top rated"];
 
   useEffect(() => {
     dispatch(setAppState(mediaType));
@@ -124,7 +107,10 @@ const MediaList = () => {
             ))}
           </Stack>
         </Stack>
-        <MediaGrid medias={medias} mediaType={mediaType} />
+        <MediaGrid
+          medias={medias}
+          mediaType={mediaType}
+        />
         <LoadingButton
           sx={{ marginTop: 8 }}
           fullWidth

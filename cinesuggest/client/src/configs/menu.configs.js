@@ -1,7 +1,7 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SlideshowOutlinedIcon from "@mui/icons-material/SlideshowOutlined";
 import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import WLOutlinedIcon from "@mui/icons-material/LocalMoviesOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
@@ -35,10 +35,10 @@ const main = [
 
 const user = [
   {
-    display: "favorites",
-    path: "/favorites",
-    icon: <FavoriteBorderOutlinedIcon />,
-    state: "favorite"
+    display: "watchlist",
+    path: "/watchlists",
+    icon: <WLOutlinedIcon />,
+    state: "watchlist"
   },
   {
     display: "reviews",
