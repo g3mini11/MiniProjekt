@@ -3,7 +3,7 @@ import { Box, Button, Chip, Divider, Stack, Typography, useTheme } from "@mui/ma
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { toast } from "react-toastify";
 
@@ -14,46 +14,49 @@ import uiConfigs from "../../configs/ui.configs";
 
 import CircularRate from "./CircularRate";
 
-import tmdbConfigs from "../../api/configs/tmdb.configs";
-import genreApi from "../../api/modules/genre.api";
-import mediaApi from "../../api/modules/media.api";
-
-const HeroSlide = ({ mediaType, mediaCategory }) => {
+const HeroSlide = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
 
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
   useEffect(() => {
     const getMedias = async () => {
-      const { response, err } = await mediaApi.getList({
-        mediaType,
-        mediaCategory,
-        page: 1
-      });
-
-      if (response) setMovies(response.results);
-      if (err) toast.error(err.message);
-      dispatch(setGlobalLoading(false));
+      dispatch(setGlobalLoading(true));
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/trending/all/week?api_key=b3eeb4de821b9b42cbc6b880a936afdf"
+        );
+        const data = await response.json();
+        const shuffledMovies = shuffleArray(data.results);
+        setMovies(shuffledMovies);
+        dispatch(setGlobalLoading(false));
+      } catch (err) {
+        toast.error("Failed to fetch movies");
+        dispatch(setGlobalLoading(false));
+      }
     };
 
     const getGenres = async () => {
-      dispatch(setGlobalLoading(true));
-      const { response, err } = await genreApi.getList({ mediaType });
-
-      if (response) {
-        setGenres(response.genres);
-        getMedias();
-      }
-      if (err) {
-        toast.error(err.message);
-        setGlobalLoading(false);
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/genre/movie/list?api_key=b3eeb4de821b9b42cbc6b880a936afdf"
+        );
+        const data = await response.json();
+        setGenres(data.genres);
+      } catch (err) {
+        toast.error("Failed to fetch genres");
       }
     };
 
     getGenres();
-  }, [mediaType, mediaCategory, dispatch]);
+    getMedias();
+  }, [dispatch]);
 
   return (
     <Box sx={{
@@ -74,12 +77,12 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
       <Swiper
         grabCursor={true}
         loop={true}
-      //  modules={[Autoplay]}
+        modules={[Autoplay]}
         style={{ width: "100%", height: "max-content" }}
-      // autoplay={{
-      //   delay: 3000,
-      //   disableOnInteraction: false
-      // }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false
+        }}
       >
         {movies.map((movie, index) => (
           <SwiperSlide key={index}>
@@ -92,7 +95,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
               },
               backgroundPosition: "top",
               backgroundSize: "cover",
-              backgroundImage: `url(${tmdbConfigs.backdropPath(movie.backdrop_path || movie.poster_path)})`
+              backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path || movie.poster_path})`
             }} />
             <Box sx={{
               width: "100%",
@@ -144,7 +147,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
                         variant="filled"
                         color="primary"
                         key={index}
-                        label={genres.find(e => e.id === genreId) && genres.find(e => e.id === genreId).name}
+                        label={genres.find(e => e.id === genreId)?.name}
                       />
                     ))}
                     {/* genres */}
@@ -164,7 +167,7 @@ const HeroSlide = ({ mediaType, mediaCategory }) => {
                     size="large"
                     startIcon={<PlayArrowIcon />}
                     component={Link}
-                    to={routesGen.mediaDetail(mediaType, movie.id)}
+                    to={routesGen.mediaDetail(movie.media_type, movie.id)}
                     sx={{ width: "max-content" }}
                   >
                     watch now
