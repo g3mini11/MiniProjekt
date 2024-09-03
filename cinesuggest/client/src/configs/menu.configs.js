@@ -5,7 +5,7 @@ import WLOutlinedIcon from "@mui/icons-material/LocalMoviesOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
-
+import MovieIcon from '@mui/icons-material/Movie';
 const main = [
   {
     display: "home",
@@ -30,6 +30,12 @@ const main = [
     path: "/search",
     icon: <SearchOutlinedIcon />,
     state: "search"
+  },
+  {
+    display: "booking",
+    path: "/booking",
+    icon: <MovieIcon/>,
+    state: "booking" 
   }
 ];
 
@@ -45,6 +51,12 @@ const user = [
     path: "/reviews",
     icon: <RateReviewOutlinedIcon />,
     state: "reviews"
+  },
+  {
+    display: "bookings",
+    path: "/bookings",
+    icon: <MovieIcon />,
+    state: "bookings"
   },
   {
     display: "password update",

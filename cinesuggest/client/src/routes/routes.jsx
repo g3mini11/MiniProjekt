@@ -6,7 +6,10 @@ import MediaList from "../pages/MediaList";
 import MediaSearch from "../pages/MediaSearch";
 import PasswordUpdate from "../pages/PasswordUpdate";
 import ReviewList from "../pages/ReviewList";
+import BookingPage from "../pages/BookingPage.jsx";
 import ProtectedPage from "../components/common/ProtectedPage";
+import BookingDetail from "../pages/BookingDetail"
+import BookingList from "../pages/BookingList";
 
 export const routesGen = {
   home: "/",
@@ -16,7 +19,10 @@ export const routesGen = {
   person: (id) => `/person/${id}`,
   watchlistList: "/watchlists",
   reviewList: "/reviews",
-  passwordUpdate: "password-update"
+  passwordUpdate: "password-update",
+  booking:"/booking",
+  bookingdetail : (id) => `/booking/${id}`,
+  bookingList:"/bookings"
 };
 
 const routes = [
@@ -63,12 +69,34 @@ const routes = [
     state: "reviews"
   },
   {
+    path: "/bookings",
+    element: (
+      <ProtectedPage>
+        <BookingList />
+      </ProtectedPage>
+    ),
+    state: "bookings"
+  },
+  {
     path: "/:mediaType",
     element: <MediaList />
   },
   {
     path: "/:mediaType/:mediaId",
     element: <MediaDetail />
+  },
+  {
+    path: "/booking",
+    element: (
+      <ProtectedPage>
+        <BookingPage />
+      </ProtectedPage>
+    ),
+    state: "booking"
+  },
+  {
+    path: "/booking/:mediaId",
+    element: <BookingDetail />
   }
 ];
 

@@ -40,7 +40,7 @@ const ReviewItem = ({ review, onRemoved }) => {
     }}>
       <Box sx={{ width: { xs: 0, md: "10%" } }}>
         <Link
-          to={routesGen.mediaDetail(review.mediaType, review.mediaid)}
+          to={routesGen.mediaDetail(review.mediaType, review.mediaId)}
           style={{ color: "unset", textDecoration: "none" }}
         >
           <Box sx={{
@@ -100,7 +100,7 @@ const ReviewList = () => {
 
   const dispatch = useDispatch();
 
-  const skip = 2;
+  const skip = 3;
 
   useEffect(() => {
     const getReviews = async () => {
