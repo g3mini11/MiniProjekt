@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom"; // Import useLocation for route matching
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import { AppBar, Box, Button, IconButton, Stack, Toolbar, useScrollTrigger } from "@mui/material";
 import { cloneElement, useState } from "react";
-import { Link } from "react-router-dom";
 import menuConfigs from "../../configs/menu.configs";
 import { themeModes } from "../../configs/theme.configs";
 import { setAuthModalOpen } from "../../redux/features/authModalSlice";
@@ -29,12 +29,13 @@ const ScrollAppBar = ({ children, window }) => {
     }
   });
 };
+
 const Topbar = () => {
   const { user } = useSelector((state) => state.user);
-  const { appState } = useSelector((state) => state.appState);
   const { themeMode } = useSelector((state) => state.themeMode);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation(); // Get the current route location
 
   const dispatch = useDispatch();
 
@@ -74,12 +75,12 @@ const Topbar = () => {
                 <Button
                   key={index}
                   sx={{
-                    color: appState.includes(item.state) ? "primary.contrastText" : "inherit",
-                    mr: 2
+                    color: location.pathname === item.path ? "primary.contrastText" : "inherit", // Exact match for active color
+                    mr: 2,
                   }}
-                  component={Link}
+                  component={NavLink}
                   to={item.path}
-                  variant={appState.includes(item.state) ? "contained" : "text"}
+                  variant={location.pathname === item.path ? "contained" : "text"} // Exact match for button variant
                 >
                   {item.display}
                 </Button>
